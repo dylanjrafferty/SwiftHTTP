@@ -1,6 +1,13 @@
-public struct SwiftHTTP {
-    public private(set) var text = "Hello, World!"
+import Foundation
 
-    public init() {
+let request = Request {
+    URL(fileURLWithPath: "Testing123")
+    
+    Body(encoding: .json) {
+        Data()
+    }
+    
+    Header {
+        KeyValue(key: "Authorization", value: "Bearer asdasdfdsads")
     }
 }
