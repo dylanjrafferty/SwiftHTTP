@@ -17,4 +17,5 @@ public struct HeaderBuilder {
 public enum RequestComponent {
     case header(Header)
     case body(Body)
+    case url(URL)
 }

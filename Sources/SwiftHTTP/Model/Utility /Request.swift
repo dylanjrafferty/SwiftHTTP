@@ -24,15 +24,15 @@ public struct Request {
     var request: URLRequest {
         var request = URLRequest(url: url)
         
-        components.forEach { component in
-            switch component {
-            case .header(let header): request.addValue(header.value, forHTTPHeaderField: header.key)
-            case .body: print("Handle body")
-//                switch body.bodyEncoding {
-//                case .json: request.httpBody = JSONEncoder().encode(body.body)
-//                }
-            }
-        }
+//        components.forEach { component in
+//            switch component {
+//            case .header(let header): request.addValue(header.value, forHTTPHeaderField: header.key)
+//            case .body: print("Handle body")
+////                switch body.bodyEncoding {
+////                case .json: request.httpBody = JSONEncoder().encode(body.body)
+////                }
+//            }
+//        }
         
         return request
     }

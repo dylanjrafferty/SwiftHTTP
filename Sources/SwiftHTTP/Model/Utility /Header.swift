@@ -7,11 +7,7 @@
 
 import Foundation
 
-public protocol RequestRepresentation {
-    var requestComponent: RequestComponent { get }
-}
-
-public struct Header: RequestRepresentation {
+public struct Header {
     
     let key: String
     let value: String

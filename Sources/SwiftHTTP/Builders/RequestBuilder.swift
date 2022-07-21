@@ -9,8 +9,29 @@ import Foundation
 
 @resultBuilder
 public struct RequestBuilder {
-    public static func buildBlock(_ url: URL, _ components: RequestRepresentation...) -> Request {
-        let requestComponents = components.map { $0.requestComponent }
-        return Request(url: url, components: requestComponents)
+    
+    public static func buildFinalResult(_ component: [RequestComponent]) -> Request {
+        Request(url: URL(fileURLWithPath: ""), components: component)
     }
+    
+//    public static func buildFinalResult(_ component: [RequestComponent]) -> () async -> Void {
+//        
+//    }
+    
+    public static func buildExpression(_ expression: Body) -> RequestComponent {
+        .body(expression)
+    }
+    
+    public static func buildExpression(_ expression: URL) -> RequestComponent {
+        .url(expression)
+    }
+    
+    public static func buildExpression(_ expression: Header) -> RequestComponent {
+        .header(expression)
+    }
+    
+    public static func buildBlock(_ components: RequestComponent...) -> [RequestComponent] {
+        components
+    }
+
 }
