@@ -7,7 +7,11 @@
 
 import Foundation
 
-public struct Header {
+public protocol RequestRepresentation {
+    var requestComponent: RequestComponent { get }
+}
+
+public struct Header: RequestRepresentation {
     
     let key: String
     let value: String
@@ -21,6 +25,10 @@ public struct Header {
         let built = builder()
         self.key = built.key
         self.value = built.value
+    }
+    
+    public var requestComponent: RequestComponent {
+        RequestComponent.header(self)
     }
     
 }

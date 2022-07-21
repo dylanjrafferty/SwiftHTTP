@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Body {
+public struct Body: RequestRepresentation {
     let bodyEncoding: BodyEncoding
     let body: Encodable
     
@@ -19,6 +19,10 @@ public struct Body {
     init(encoding: BodyEncoding, @BodyBuilder builder: () -> Encodable) {
         self.bodyEncoding = encoding
         self.body = builder()
+    }
+    
+    public var requestComponent: RequestComponent {
+        RequestComponent.body(self)
     }
 }
 

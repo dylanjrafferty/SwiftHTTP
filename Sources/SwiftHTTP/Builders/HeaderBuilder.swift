@@ -13,3 +13,8 @@ public struct HeaderBuilder {
         Header(key: keyValue.key, value: keyValue.value)
     }
 }
+
+public enum RequestComponent {
+    case header(Header)
+    case body(Body)
+}

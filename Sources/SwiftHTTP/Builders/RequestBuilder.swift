@@ -9,7 +9,8 @@ import Foundation
 
 @resultBuilder
 public struct RequestBuilder {
-    public static func buildBlock(_ url: URL, _ body: Body, _ headers: Header...) -> Request {
-        Request(body: body, headers: headers, url: url)
+    public static func buildBlock(_ url: URL, _ components: RequestRepresentation...) -> Request {
+        let requestComponents = components.map { $0.requestComponent }
+        return Request(url: url, components: requestComponents)
     }
 }
