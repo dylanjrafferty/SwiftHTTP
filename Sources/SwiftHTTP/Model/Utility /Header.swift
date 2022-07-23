@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Header {
+public struct Header: RequestComponent {
     
     let key: String
     let value: String
@@ -23,8 +23,8 @@ public struct Header {
         self.value = built.value
     }
     
-    public var requestComponent: RequestComponent {
-        RequestComponent.header(self)
+    public func apply(to request: inout URLRequest) throws {
+        request.addValue(key, forHTTPHeaderField: value)
     }
     
 }

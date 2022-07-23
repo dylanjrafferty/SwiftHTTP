@@ -14,7 +14,6 @@ public struct HeaderBuilder {
     }
 }
 
-public enum RequestComponent {
-    case header(Header)
-    case body(Body)
+public protocol RequestComponent {
+    func apply(to request: inout URLRequest) throws 
 }

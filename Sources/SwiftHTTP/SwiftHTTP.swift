@@ -34,10 +34,6 @@ struct Sample: Requestable {
             }
         }
     }
-    
-    func test() {
-        Sample()()
-    }
 }
 
 //let healthyAction = await Request<Response> {

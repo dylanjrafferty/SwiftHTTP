@@ -9,8 +9,7 @@ import Foundation
 
 @resultBuilder
 public struct BodyBuilder {
-    public static func buildBlock<T: Encodable>(_ body: T) -> Encodable {
+    public static func buildBlock<T: Encodable>(_ body: T) -> T {
        body
     }
-    
 }

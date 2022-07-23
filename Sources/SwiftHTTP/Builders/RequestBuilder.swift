@@ -18,12 +18,12 @@ public struct RequestBuilder {
 //        
 //    }
     
-    public static func buildExpression(_ expression: Body) -> RequestComponent {
-        .body(expression)
+    public static func buildExpression<T: Encodable>(_ expression: Body<T>) -> RequestComponent {
+        expression
     }
     
     public static func buildExpression(_ expression: Header) -> RequestComponent {
-        .header(expression)
+        expression
     }
     
     public static func buildBlock(_ components: RequestComponent...) -> [RequestComponent] {
