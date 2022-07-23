@@ -24,14 +24,14 @@ struct Sample: Requestable {
     typealias responseType = Response
     
     var request: Request {
-        URL(fileURLWithPath: "Testing123")
-        
-        Body(encoding: .json) {
-            Data()
-        }
-        
-        Header {
-            KeyValue(key: "Authorization", value: "Bearer asdasdfdsads")
+        return Request(url: URL(fileURLWithPath: "Testing123")) {
+            Body(encoding: .json) {
+                Data()
+            }
+            
+            Header {
+                KeyValue(key: "Authorization", value: "Bearer asdasdfdsads")
+            }
         }
     }
     

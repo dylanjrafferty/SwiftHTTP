@@ -10,8 +10,8 @@ import Foundation
 @resultBuilder
 public struct RequestBuilder {
     
-    public static func buildFinalResult(_ component: [RequestComponent]) -> Request {
-        Request(url: URL(fileURLWithPath: ""), components: component)
+    public static func buildFinalResult(_ component: [RequestComponent]) -> [RequestComponent] {
+        component
     }
     
 //    public static func buildFinalResult(_ component: [RequestComponent]) -> () async -> Void {
@@ -20,10 +20,6 @@ public struct RequestBuilder {
     
     public static func buildExpression(_ expression: Body) -> RequestComponent {
         .body(expression)
-    }
-    
-    public static func buildExpression(_ expression: URL) -> RequestComponent {
-        .url(expression)
     }
     
     public static func buildExpression(_ expression: Header) -> RequestComponent {
