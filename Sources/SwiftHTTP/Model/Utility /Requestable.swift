@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 @NetworkingActor protocol Requestable {
-    associatedtype responseType: Decodable
+    associatedtype ResponseType: Decodable
     var request: Request { get }
 }
 
@@ -25,16 +25,16 @@ public protocol CustomDecoder {
 extension Requestable {
     
     @discardableResult
-    func callAsFunction(decodingType: DecodingType = .json) async throws -> responseType {
+    func callAsFunction(decodingType: DecodingType = .json) async throws -> ResponseType {
         let (data, _) = try await URLSession.shared.execute(request.request)
         
         switch decodingType {
         case .json:
             guard let data = data else { throw NetworkingError.invalidData }
-            return try JSONDecoder().decode(responseType.self, from: data)
+            return try JSONDecoder().decode(ResponseType.self, from: data)
         case .custom(let decoder):
             guard let data = data else { throw NetworkingError.invalidData }
-            return try decoder.decode(responseType.self, from: data)
+            return try decoder.decode(ResponseType.self, from: data)
         }
     }
 }

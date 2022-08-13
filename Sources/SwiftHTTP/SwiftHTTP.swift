@@ -15,7 +15,7 @@ struct Sample: Requestable {
 
     @NetworkingEnvironment(\.baseURL) private var specialURL: URL
     
-    typealias responseType = Response
+    typealias ResponseType = Response
     
     var request: Request {
         Request(url: URL(fileURLWithPath: "Testing123")) {
