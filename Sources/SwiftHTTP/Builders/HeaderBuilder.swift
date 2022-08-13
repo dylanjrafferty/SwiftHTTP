@@ -12,6 +12,14 @@ public struct HeaderBuilder {
     public static func buildBlock(_ keyValue: KeyValue) -> Header {
         Header(key: keyValue.key, value: keyValue.value)
     }
+    
+    public static func buildEither(first component: Header) -> Header {
+        component
+    }
+    
+    public static func buildEither(second component: Header) -> Header {
+        component
+    }
 }
 
 public protocol RequestComponent {

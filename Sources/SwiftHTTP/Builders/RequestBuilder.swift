@@ -14,10 +14,6 @@ public struct RequestBuilder {
         component
     }
     
-//    public static func buildFinalResult(_ component: [RequestComponent]) -> () async -> Void {
-//        
-//    }
-    
     public static func buildExpression<T: Encodable>(_ expression: Body<T>) -> RequestComponent {
         expression
     }
@@ -28,6 +24,22 @@ public struct RequestBuilder {
     
     public static func buildBlock(_ components: RequestComponent...) -> [RequestComponent] {
         components
+    }
+    
+    public static func buildEither(first component: [RequestComponent]) -> [RequestComponent] {
+        component
+    }
+    
+    public static func buildEither(second component: [RequestComponent]) -> [RequestComponent] {
+        component
+    }
+    
+    public static func buildArray(_ components: [[RequestComponent]]) -> [RequestComponent] {
+        components.flatMap { $0 }
+    }
+    
+    public static func buildOptional(_ component: [RequestComponent]?) -> [RequestComponent] {
+        component ?? []
     }
 
 }

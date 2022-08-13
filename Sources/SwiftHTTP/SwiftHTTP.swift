@@ -3,8 +3,6 @@ import Foundation
 @globalActor
 final actor NetworkingActor {
     public static var shared = NetworkingActor()
-    
-    
 }
 
 enum NetworkingError: Error {
@@ -18,7 +16,7 @@ struct Sample: Requestable {
     typealias ResponseType = Response
     
     var request: Request {
-        Request(url: URL(fileURLWithPath: "Testing123")) {
+        Request(url: specialURL) {
             Body(encoding: .json) {
                 Data()
             }

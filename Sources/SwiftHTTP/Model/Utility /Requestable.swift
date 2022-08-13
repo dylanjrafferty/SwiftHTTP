@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 
 @NetworkingActor protocol Requestable {
     associatedtype ResponseType: Decodable
