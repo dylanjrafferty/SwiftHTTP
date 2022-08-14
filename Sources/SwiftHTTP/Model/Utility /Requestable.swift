@@ -10,16 +10,14 @@ import Foundation
 @globalActor
 final actor NetworkingActor {
     public static var shared = NetworkingActor()
-}
-
-extension NetworkingActor {
-    static var isRefreshing = false
+    
+    var isRefreshing = false
 }
 
 @NetworkingActor protocol Requestable {
     associatedtype ResponseType: Decodable
     var request: Request { get }
-    var requestOptions: RequestOptions { get }
+    nonisolated var requestOptions: RequestOptions { get }
 }
 
 @NetworkingActor extension Requestable {
@@ -37,19 +35,32 @@ public protocol CustomDecoder {
     func decode<T>(_ type: T.Type, from: Data) throws -> T
 }
 
-@NetworkingActor extension Requestable {
+extension Requestable {
     
     @discardableResult
-    func callAsFunction(decodingType: DecodingType = .json) async throws -> ResponseType {
+    nonisolated func callAsFunction(decodingType: DecodingType = .json) async throws -> ResponseType {
+        
+        if requestOptions != .authorization {
+            await waitForRefresh()
+        }
+        
         let (data, _) = try await URLSession.shared.execute(request.request)
         
+        guard let data = data else { throw NetworkingError.invalidData }
+        
+        return try decode(data, decodingType: decodingType)
+    }
+    
+    nonisolated func decode(_ data: Data, decodingType: DecodingType) throws -> ResponseType {
         switch decodingType {
         case .json:
-            guard let data = data else { throw NetworkingError.invalidData }
             return try JSONDecoder().decode(ResponseType.self, from: data)
         case .custom(let decoder):
-            guard let data = data else { throw NetworkingError.invalidData }
             return try decoder.decode(ResponseType.self, from: data)
         }
+    }
+    
+    @NetworkingActor func waitForRefresh() async {
+        // Return when refreshing has stopped
     }
 }
