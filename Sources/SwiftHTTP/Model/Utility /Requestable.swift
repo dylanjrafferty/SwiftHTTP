@@ -20,7 +20,7 @@ final actor NetworkingActor {
     nonisolated var requestOptions: RequestOptions { get }
 }
 
-@NetworkingActor extension Requestable {
+extension Requestable {
     var requestOptions: RequestOptions {
         .none
     }
