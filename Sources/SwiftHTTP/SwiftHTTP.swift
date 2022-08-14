@@ -1,10 +1,5 @@
 import Foundation
 
-@globalActor
-final actor NetworkingActor {
-    public static var shared = NetworkingActor()
-}
-
 enum NetworkingError: Error {
     case invalidData
 }

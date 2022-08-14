@@ -26,3 +26,15 @@ public struct Request {
     }
 
 }
+
+public struct RequestOptions: OptionSet {
+    public let rawValue: Int
+    
+    public init(rawValue: Int) {
+        self.rawValue = rawValue
+    }
+    public static let highPriority = RequestOptions(rawValue: 1 << 0)
+    public static let authorization = RequestOptions(rawValue: 1 << 1)
+    public static let all: RequestOptions = [.highPriority, .authorization]
+    public static let none: RequestOptions = []
+}

@@ -7,9 +7,25 @@
 
 import Foundation
 
+@globalActor
+final actor NetworkingActor {
+    public static var shared = NetworkingActor()
+}
+
+extension NetworkingActor {
+    static var isRefreshing = false
+}
+
 @NetworkingActor protocol Requestable {
     associatedtype ResponseType: Decodable
     var request: Request { get }
+    var requestOptions: RequestOptions { get }
+}
+
+@NetworkingActor extension Requestable {
+    var requestOptions: RequestOptions {
+        .none
+    }
 }
 
 public enum DecodingType {
@@ -21,7 +37,7 @@ public protocol CustomDecoder {
     func decode<T>(_ type: T.Type, from: Data) throws -> T
 }
 
-extension Requestable {
+@NetworkingActor extension Requestable {
     
     @discardableResult
     func callAsFunction(decodingType: DecodingType = .json) async throws -> ResponseType {
