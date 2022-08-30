@@ -9,12 +9,10 @@ import Foundation
 
 public protocol NetworkingEnvironmentKey {
     associatedtype Value
-    
     static var defaultValue: Self.Value { get }
 }
 
 public struct NetworkingEnvironmentValues {
-    
     public subscript<K: NetworkingEnvironmentKey>(key: K.Type) -> K.Value {
         get {
             K.defaultValue
@@ -34,17 +32,42 @@ extension NetworkingEnvironmentValues {
 
 @propertyWrapper
 public struct NetworkingEnvironment<Value> {
+    private enum Source {
+        case keyPath(KeyPath<NetworkingEnvironmentValues, Value>)
+        case value(Value)
+    }
     
     public var wrappedValue: Value {
         get {
-            NetworkingEnvironmentValues()[keyPath: keyPath]
+            switch source {
+            case .keyPath(let keyPath):
+                return NetworkingEnvironmentValues()[keyPath: keyPath]
+            case .value(let value):
+                return value
+            }
         }
     }
 
-    let keyPath: KeyPath<NetworkingEnvironmentValues, Value>
+    private var source: Source
 
     init(_ keyPath: KeyPath<NetworkingEnvironmentValues, Value>) {
-        self.keyPath = keyPath
+        self.source = .keyPath(keyPath)
     }
-
 }
+
+//extension Request {
+//    func networkingEnvironment<Value>(_ keyPath: KeyPath<NetworkingEnvironmentValues, Value>, _ value: Value) -> Request {
+//        
+//    }
+//}
+/*
+ 
+ There is one env that lives and provides default,
+ on each request a custom dict lives with the overrides
+ the propertywrapper checks if bound to request or should use default
+ 
+ */
+
+
+
+
