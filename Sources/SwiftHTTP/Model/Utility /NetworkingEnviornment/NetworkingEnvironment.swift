@@ -13,9 +13,20 @@ public protocol NetworkingEnvironmentKey {
 }
 
 public struct NetworkingEnvironmentValues {
+    
+    static let shared = NetworkingEnvironmentValues()
+    
+    private var overrides = [ObjectIdentifier: Any]()
+    
     public subscript<K: NetworkingEnvironmentKey>(key: K.Type) -> K.Value {
         get {
-            K.defaultValue
+            guard let value = overrides[ObjectIdentifier(key)] as? K.Value else {
+                return K.defaultValue
+            }
+            return value
+        }
+        set {
+            overrides[ObjectIdentifier(key)] = newValue
         }
     }
 }
@@ -27,37 +38,28 @@ private struct BaseURL: NetworkingEnvironmentKey {
 extension NetworkingEnvironmentValues {
     var baseURL: URL {
         get { self[BaseURL.self] }
+        set { self[BaseURL.self] = newValue }
     }
 }
 
-@propertyWrapper
-public struct NetworkingEnvironment<Value> {
-    private enum Source {
-        case keyPath(KeyPath<NetworkingEnvironmentValues, Value>)
-        case value(Value)
-    }
+@propertyWrapper public struct NetworkingEnvironment<Value> {
     
     public var wrappedValue: Value {
         get {
-            switch source {
-            case .keyPath(let keyPath):
-                return NetworkingEnvironmentValues()[keyPath: keyPath]
-            case .value(let value):
-                return value
-            }
+            NetworkingEnvironmentValues()[keyPath: keyPath]
         }
     }
 
-    private var source: Source
+    private let keyPath: KeyPath<NetworkingEnvironmentValues, Value>
 
     init(_ keyPath: KeyPath<NetworkingEnvironmentValues, Value>) {
-        self.source = .keyPath(keyPath)
+        self.keyPath = keyPath
     }
 }
 
 //extension Request {
-//    func networkingEnvironment<Value>(_ keyPath: KeyPath<NetworkingEnvironmentValues, Value>, _ value: Value) -> Request {
-//        
+//    func networkingEnvironment<Value>(_ keyPath: WritableKeyPath<NetworkingEnvironmentValues, Value>, _ value: Value) -> Request {
+//
 //    }
 //}
 /*
