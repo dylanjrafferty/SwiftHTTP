@@ -10,7 +10,9 @@ final class SwiftHTTPTests: XCTestCase {
         let overridenRequest = OverrideRequest()
             .networkingEnvironment(\.baseURL, URL(fileURLWithPath: "Some New URL"))
             .networkingEnvironment(\.baseURL, URL(fileURLWithPath: "Overriden Again"))
+            .networkingEnvironment(\.endpoint, "New Endpoint")
         XCTAssertEqual(overridenRequest.baseURL, URL(fileURLWithPath: "Overriden Again"))
+        XCTAssertEqual(overridenRequest.endpoint, "New Endpoint")
     }
 }
 
@@ -19,6 +21,7 @@ fileprivate struct OverrideRequest: Requestable {
     typealias ResponseType = Response
     
     @NetworkingEnvironment(\.baseURL) var baseURL
+    @NetworkingEnvironment(\.endpoint) var endpoint
     
     var request: Request {
         Request(url: baseURL) {
@@ -28,3 +31,14 @@ fileprivate struct OverrideRequest: Requestable {
 }
 
 fileprivate struct Response: Decodable { }
+
+fileprivate struct Endpoint: NetworkingEnvironmentKey {
+    static var defaultValue: String = "example"
+}
+
+fileprivate extension NetworkingEnvironmentValues {
+    var endpoint: String {
+        get { self[Endpoint.self] }
+        set { self[Endpoint.self] = newValue }
+    }
+}
