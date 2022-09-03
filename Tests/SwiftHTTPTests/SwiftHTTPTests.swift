@@ -14,6 +14,15 @@ final class SwiftHTTPTests: XCTestCase {
         XCTAssertEqual(overridenRequest.baseURL, URL(fileURLWithPath: "Overriden Again"))
         XCTAssertEqual(overridenRequest.endpoint, "New Endpoint")
     }
+    
+    @NetworkingActor func testMultipleOverrides() throws {
+        let firstRequest = OverrideRequest()
+            .networkingEnvironment(\.baseURL, URL(fileURLWithPath: "Some New URL"))
+        let secondRequest = OverrideRequest()
+            .networkingEnvironment(\.baseURL, URL(fileURLWithPath: "Newer URL"))
+        XCTAssertEqual(firstRequest.baseURL,  URL(fileURLWithPath: "Some New URL"))
+        XCTAssertEqual(secondRequest.baseURL, URL(fileURLWithPath: "Newer URL"))
+    }
 }
 
 fileprivate struct OverrideRequest: Requestable {
