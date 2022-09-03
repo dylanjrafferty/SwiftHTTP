@@ -42,11 +42,14 @@ extension NetworkingEnvironmentValues {
     }
 }
 
-@propertyWrapper public struct NetworkingEnvironment<Value> {
+@NetworkingActor @propertyWrapper public struct NetworkingEnvironment<Value> {
     
     public var wrappedValue: Value {
         get {
-            NetworkingEnvironmentValues()[keyPath: keyPath]
+            guard let value = _value else {
+                fatalError("Not used within the networking context")
+            }
+            return value
         }
     }
 
@@ -55,13 +58,22 @@ extension NetworkingEnvironmentValues {
     init(_ keyPath: KeyPath<NetworkingEnvironmentValues, Value>) {
         self.keyPath = keyPath
     }
+    
+    private var _value: Value? {
+        NetworkingActor.shared.environment[keyPath: keyPath]
+    }
+    
 }
 
-//extension Request {
-//    func networkingEnvironment<Value>(_ keyPath: WritableKeyPath<NetworkingEnvironmentValues, Value>, _ value: Value) -> Request {
-//
-//    }
-//}
+extension Requestable {
+    @NetworkingActor func networkingEnvironment<Value>(_ keyPath: WritableKeyPath<NetworkingEnvironmentValues, Value>, _ value: Value) -> Self {
+        var environment = NetworkingActor.shared.environment
+        environment[keyPath: keyPath] = value
+        NetworkingActor.shared.environmentStack.append(environment)
+        return self
+    }
+}
+
 /*
  
  There is one env that lives and provides default,

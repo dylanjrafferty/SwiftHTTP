@@ -11,7 +11,12 @@ import Foundation
 final actor NetworkingActor {
     public static var shared = NetworkingActor()
     
-    var isRefreshing = false
+    @NetworkingActor var isRefreshing = false
+    @NetworkingActor var environmentStack = [NetworkingEnvironmentValues.shared]
+    
+    @NetworkingActor var environment: NetworkingEnvironmentValues {
+        environmentStack.last ?? NetworkingEnvironmentValues.shared
+    }
 }
 
 @NetworkingActor protocol Requestable {
