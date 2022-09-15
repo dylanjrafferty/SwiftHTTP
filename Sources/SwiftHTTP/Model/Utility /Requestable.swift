@@ -19,13 +19,13 @@ final actor NetworkingActor {
     }
 }
 
-@NetworkingActor protocol Requestable {
+@NetworkingActor public protocol Requestable {
     associatedtype ResponseType: Decodable
     var request: Request { get }
     nonisolated var requestOptions: RequestOptions { get }
 }
 
-extension Requestable {
+public extension Requestable {
     var requestOptions: RequestOptions {
         .none
     }
