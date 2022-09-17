@@ -45,15 +45,11 @@ extension NetworkingEnvironmentValues {
 @NetworkingActor @propertyWrapper public struct NetworkingEnvironment<Value> {
     
     @available(*, unavailable,
-        message: "@NetorkingEnvironment can only be used within classes"
+        message: "@NetworkingEnvironment can only be used within classes that conform to Requestable"
     )
     public var wrappedValue: Value {
-        get {
-            fatalError()
-        }
-        set {
-            fatalError()
-        }
+        get { fatalError() }
+        set { fatalError() }
     }
     
     public static subscript<R: Requestable>(
@@ -62,11 +58,11 @@ extension NetworkingEnvironmentValues {
           storage storageKeyPath: ReferenceWritableKeyPath<R, Self>
         ) -> Value {
         get {
-            instance.request.overrides[keyPath: instance[keyPath: storageKeyPath].keyPath]
+            instance._overrides[keyPath: instance[keyPath: storageKeyPath].keyPath]
         }
         set {
             fatalError()
-//            instance.request.overrides[keyPath: instance[keyPath: storageKeyPath].keyPath] = newValue
+//            instance._overrides[keyPath: instance[keyPath: storageKeyPath].keyPath] = newValue
         }
     }
 
@@ -79,9 +75,9 @@ extension NetworkingEnvironmentValues {
 
 extension Requestable {
     @NetworkingActor func networkingEnvironment<Value>(_ keyPath: WritableKeyPath<NetworkingEnvironmentValues, Value>, _ value: Value) -> Self {
-//        var mutableOverrides = request.overrides
-//        mutableOverrides[keyPath: keyPath] = value
-//        request.overrideEnvironment(mutableOverrides)
+        var mutableOverrides = _overrides
+        mutableOverrides[keyPath: keyPath] = value
+        _overrides = mutableOverrides
         return self
     }
 }

@@ -14,15 +14,21 @@ final actor NetworkingActor {
     @NetworkingActor var isRefreshing = false
 }
 
-@NetworkingActor public protocol Requestable {
+@NetworkingActor public protocol Requestable: AnyObject {
     associatedtype ResponseType: Decodable
     var request: Request { get }
     nonisolated var requestOptions: RequestOptions { get }
+    nonisolated var _overrides: NetworkingEnvironmentValues { get set }
 }
 
-extension Request {
-    mutating func overrideEnvironment(_ newEnvironment: NetworkingEnvironmentValues) {
-        self.overrides = newEnvironment
+extension Requestable {
+    nonisolated var _overrides: NetworkingEnvironmentValues {
+        get {
+            NetworkingEnvironmentValues()
+        }
+        set {
+            _overrides = newValue
+        }
     }
 }
 
