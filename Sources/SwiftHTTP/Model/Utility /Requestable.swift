@@ -12,17 +12,18 @@ final actor NetworkingActor {
     public static var shared = NetworkingActor()
     
     @NetworkingActor var isRefreshing = false
-    @NetworkingActor var environmentStack = [NetworkingEnvironmentValues.shared]
-    
-    @NetworkingActor var environment: NetworkingEnvironmentValues {
-        environmentStack.last ?? NetworkingEnvironmentValues.shared
-    }
 }
 
 @NetworkingActor public protocol Requestable {
     associatedtype ResponseType: Decodable
     var request: Request { get }
     nonisolated var requestOptions: RequestOptions { get }
+}
+
+extension Request {
+    mutating func overrideEnvironment(_ newEnvironment: NetworkingEnvironmentValues) {
+        self.overrides = newEnvironment
+    }
 }
 
 public extension Requestable {

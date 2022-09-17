@@ -11,10 +11,12 @@ public struct Request {
     
     let components: [RequestComponent]
     let url: URL
+    var overrides: NetworkingEnvironmentValues
     
     init(url: URL, @RequestBuilder builder: () -> [RequestComponent]) {
         self.url = url
         components = builder()
+        overrides = NetworkingEnvironmentValues()
     }
     
     var request: URLRequest {

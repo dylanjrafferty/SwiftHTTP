@@ -25,7 +25,7 @@ final class SwiftHTTPTests: XCTestCase {
     }
 }
 
-fileprivate struct OverrideRequest: Requestable {
+fileprivate class OverrideRequest: Requestable {
     
     typealias ResponseType = Response
     

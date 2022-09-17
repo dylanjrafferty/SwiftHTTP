@@ -4,8 +4,8 @@ enum NetworkingError: Error {
     case invalidData
 }
 
-struct Sample: Requestable {
-
+class Sample: Requestable {
+    
     @NetworkingEnvironment(\.baseURL) private var specialURL: URL
     
     typealias ResponseType = Response
