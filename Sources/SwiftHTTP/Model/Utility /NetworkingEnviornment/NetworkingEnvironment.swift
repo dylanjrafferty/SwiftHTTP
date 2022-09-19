@@ -61,14 +61,13 @@ extension NetworkingEnvironmentValues {
             instance._overrides[keyPath: instance[keyPath: storageKeyPath].keyPath]
         }
         set {
-            fatalError()
-//            instance._overrides[keyPath: instance[keyPath: storageKeyPath].keyPath] = newValue
+            instance._overrides[keyPath: instance[keyPath: storageKeyPath].keyPath] = newValue
         }
     }
 
-    private let keyPath: KeyPath<NetworkingEnvironmentValues, Value>
+    private let keyPath: WritableKeyPath<NetworkingEnvironmentValues, Value>
 
-    init(_ keyPath: KeyPath<NetworkingEnvironmentValues, Value>) {
+    init(_ keyPath: WritableKeyPath<NetworkingEnvironmentValues, Value>) {
         self.keyPath = keyPath
     }
 }

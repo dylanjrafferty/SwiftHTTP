@@ -14,6 +14,10 @@ final actor NetworkingActor {
     @NetworkingActor var isRefreshing = false
 }
 
+extension NetworkingActor {
+    static var environmentOverrides = [AnyHashable: NetworkingEnvironmentValues]()
+}
+
 @NetworkingActor public protocol Requestable: AnyObject {
     associatedtype ResponseType: Decodable
     var request: Request { get }
@@ -22,12 +26,12 @@ final actor NetworkingActor {
 }
 
 extension Requestable {
-    nonisolated var _overrides: NetworkingEnvironmentValues {
+     @NetworkingActor var _overrides: NetworkingEnvironmentValues {
         get {
-            NetworkingEnvironmentValues()
+            NetworkingActor.environmentOverrides[AnyHashable(request)] ?? NetworkingEnvironmentValues()
         }
         set {
-            _overrides = newValue
+            NetworkingActor.environmentOverrides[AnyHashable(request)] = newValue
         }
     }
 }
