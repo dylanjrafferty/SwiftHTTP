@@ -15,7 +15,7 @@ public struct Request: Hashable {
     }
     
     public func hash(into hasher: inout Hasher) {
-        fatalError()
+        hasher.combine(url)
     }
     
     let components: [RequestComponent]

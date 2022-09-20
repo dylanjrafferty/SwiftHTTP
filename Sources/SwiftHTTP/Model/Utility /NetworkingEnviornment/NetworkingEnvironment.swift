@@ -58,10 +58,13 @@ extension NetworkingEnvironmentValues {
           storage storageKeyPath: ReferenceWritableKeyPath<R, Self>
         ) -> Value {
         get {
-            instance._overrides[keyPath: instance[keyPath: storageKeyPath].keyPath]
+            let overrides = NetworkingActor.environmentOverrides[instance.request] ?? NetworkingEnvironmentValues()
+            return overrides[keyPath: instance[keyPath: storageKeyPath].keyPath]
         }
         set {
-            instance._overrides[keyPath: instance[keyPath: storageKeyPath].keyPath] = newValue
+            var overrides = NetworkingActor.environmentOverrides[instance.request] ?? NetworkingEnvironmentValues()
+            overrides[keyPath: instance[keyPath: storageKeyPath].keyPath] = newValue
+            NetworkingActor.environmentOverrides[instance.request] = overrides
         }
     }
 
@@ -74,9 +77,9 @@ extension NetworkingEnvironmentValues {
 
 extension Requestable {
     @NetworkingActor func networkingEnvironment<Value>(_ keyPath: WritableKeyPath<NetworkingEnvironmentValues, Value>, _ value: Value) -> Self {
-        var mutableOverrides = _overrides
+        var mutableOverrides = NetworkingActor.environmentOverrides[request] ?? NetworkingEnvironmentValues()
         mutableOverrides[keyPath: keyPath] = value
-        _overrides = mutableOverrides
+        NetworkingActor.environmentOverrides[request] = mutableOverrides
         return self
     }
 }
