@@ -12,13 +12,24 @@ final actor NetworkingActor {
     public static var shared = NetworkingActor()
     
     @NetworkingActor var isRefreshing = false
-    @NetworkingActor var environmentOverrides = [Request: NetworkingEnvironmentValues]()
+    @NetworkingActor var environmentOverrides = [AnyHashable: NetworkingEnvironmentValues]()
 }
 
-@NetworkingActor public protocol Requestable: AnyObject {
+@NetworkingActor public protocol Requestable: AnyObject, Identifiable {
     associatedtype ResponseType: Decodable
     var request: Request { get }
     nonisolated var requestOptions: RequestOptions { get }
+}
+
+extension Requestable {
+    var _overrides: NetworkingEnvironmentValues {
+        get {
+            NetworkingActor.shared.environmentOverrides[id] ?? NetworkingEnvironmentValues()
+        }
+        set {
+            NetworkingActor.shared.environmentOverrides[id] = newValue
+        }
+    }
 }
 
 public extension Requestable {
