@@ -76,9 +76,9 @@ extension NetworkingEnvironmentValues {
 
 extension Requestable {
     @NetworkingActor func networkingEnvironment<Value>(_ keyPath: WritableKeyPath<NetworkingEnvironmentValues, Value>, _ value: Value) -> Self {
-        var mutableOverrides = NetworkingActor.shared.environmentOverrides[request] ?? NetworkingEnvironmentValues()
+        var mutableOverrides = _overrides
         mutableOverrides[keyPath: keyPath] = value
-        NetworkingActor.shared.environmentOverrides[request] = mutableOverrides
+        _overrides = mutableOverrides
         return self
     }
 }
