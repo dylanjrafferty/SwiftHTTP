@@ -58,13 +58,13 @@ extension NetworkingEnvironmentValues {
           storage storageKeyPath: ReferenceWritableKeyPath<R, Self>
         ) -> Value {
         get {
-            let overrides = NetworkingActor.environmentOverrides[instance.request] ?? NetworkingEnvironmentValues()
+            let overrides = NetworkingActor.shared.environmentOverrides[instance.request] ?? NetworkingEnvironmentValues()
             return overrides[keyPath: instance[keyPath: storageKeyPath].keyPath]
         }
         set {
-            var overrides = NetworkingActor.environmentOverrides[instance.request] ?? NetworkingEnvironmentValues()
+            var overrides = NetworkingActor.shared.environmentOverrides[instance.request] ?? NetworkingEnvironmentValues()
             overrides[keyPath: instance[keyPath: storageKeyPath].keyPath] = newValue
-            NetworkingActor.environmentOverrides[instance.request] = overrides
+            NetworkingActor.shared.environmentOverrides[instance.request] = overrides
         }
     }
 
@@ -77,21 +77,9 @@ extension NetworkingEnvironmentValues {
 
 extension Requestable {
     @NetworkingActor func networkingEnvironment<Value>(_ keyPath: WritableKeyPath<NetworkingEnvironmentValues, Value>, _ value: Value) -> Self {
-        var mutableOverrides = NetworkingActor.environmentOverrides[request] ?? NetworkingEnvironmentValues()
+        var mutableOverrides = NetworkingActor.shared.environmentOverrides[request] ?? NetworkingEnvironmentValues()
         mutableOverrides[keyPath: keyPath] = value
-        NetworkingActor.environmentOverrides[request] = mutableOverrides
+        NetworkingActor.shared.environmentOverrides[request] = mutableOverrides
         return self
     }
 }
-
-/*
- 
- There is one env that lives and provides default,
- on each request a custom dict lives with the overrides
- the propertywrapper checks if bound to request or should use default
- 
- */
-
-
-
-

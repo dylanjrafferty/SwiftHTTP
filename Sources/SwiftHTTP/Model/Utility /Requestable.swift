@@ -12,10 +12,7 @@ final actor NetworkingActor {
     public static var shared = NetworkingActor()
     
     @NetworkingActor var isRefreshing = false
-}
-
-extension NetworkingActor {
-    static var environmentOverrides = [Request: NetworkingEnvironmentValues]()
+    @NetworkingActor var environmentOverrides = [Request: NetworkingEnvironmentValues]()
 }
 
 @NetworkingActor public protocol Requestable: AnyObject {

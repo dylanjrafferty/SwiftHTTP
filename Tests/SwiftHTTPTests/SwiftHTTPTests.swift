@@ -33,7 +33,7 @@ fileprivate class OverrideRequest: Requestable {
     @NetworkingEnvironment(\.endpoint) var endpoint
     
     var request: Request {
-        Request(url: baseURL) {
+        Request(url: URL(fileURLWithPath: "Newer URL")) {
             
         }
     }
