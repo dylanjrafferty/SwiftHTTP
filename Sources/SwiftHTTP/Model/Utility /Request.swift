@@ -9,9 +9,8 @@ import Foundation
 
 public struct Request: Hashable {
     
-    // TODO: Fix this
     public static func == (lhs: Request, rhs: Request) -> Bool {
-        true
+        lhs.url == rhs.url
     }
     
     public func hash(into hasher: inout Hasher) {
