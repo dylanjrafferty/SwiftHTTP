@@ -7,15 +7,7 @@
 
 import Foundation
 
-public struct Request: Hashable {
-    
-    public static func == (lhs: Request, rhs: Request) -> Bool {
-        lhs.url == rhs.url
-    }
-    
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(url)
-    }
+public struct Request {
     
     let components: [RequestComponent]
     let url: URL
