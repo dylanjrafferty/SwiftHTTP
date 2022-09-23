@@ -82,3 +82,14 @@ extension Requestable {
         return self
     }
 }
+
+extension Requestable {
+    var _overrides: NetworkingEnvironmentValues {
+        get {
+            NetworkingActor.shared.environmentOverrides[id] ?? NetworkingEnvironmentValues()
+        }
+        set {
+            NetworkingActor.shared.environmentOverrides[id] = newValue
+        }
+    }
+}

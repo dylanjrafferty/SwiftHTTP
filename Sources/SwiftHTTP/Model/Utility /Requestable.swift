@@ -21,17 +21,6 @@ final actor NetworkingActor {
     nonisolated var requestOptions: RequestOptions { get }
 }
 
-extension Requestable {
-    var _overrides: NetworkingEnvironmentValues {
-        get {
-            NetworkingActor.shared.environmentOverrides[id] ?? NetworkingEnvironmentValues()
-        }
-        set {
-            NetworkingActor.shared.environmentOverrides[id] = newValue
-        }
-    }
-}
-
 public extension Requestable {
     var requestOptions: RequestOptions {
         .none
