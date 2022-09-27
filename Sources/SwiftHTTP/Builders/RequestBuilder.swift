@@ -41,5 +41,13 @@ public struct RequestBuilder {
     public static func buildOptional(_ component: [RequestComponent]?) -> [RequestComponent] {
         component ?? []
     }
+    
+    public static func buildOptional(_ component: RequestComponent?) -> [RequestComponent] {
+        if let component {
+            return [component]
+        } else {
+            return []
+        }
+    }
 
 }
