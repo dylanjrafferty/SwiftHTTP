@@ -10,8 +10,7 @@ import Foundation
 @globalActor
 final actor NetworkingActor {
     public static var shared = NetworkingActor()
-    
-    @NetworkingActor var isRefreshing = false
+    @NetworkingActor var globalOverrides = NetworkingEnvironmentValues()
     @NetworkingActor var environmentOverrides = [AnyHashable: NetworkingEnvironmentValues]()
 }
 
@@ -41,11 +40,7 @@ extension Requestable {
     @discardableResult
     nonisolated func callAsFunction(decodingType: DecodingType = .json) async throws -> ResponseType {
         
-        if requestOptions != .authorization {
-            await waitForRefresh()
-        }
-        
-        let (data, _) = try await URLSession.shared.execute(request.request)
+        let (data, _) = try await NetworkingActor.shared.globalOverrides[DefaultURLSession.self].execute(request.request)
         
         guard let data = data else { throw NetworkingError.invalidData }
         
@@ -59,9 +54,5 @@ extension Requestable {
         case .custom(let decoder):
             return try decoder.decode(ResponseType.self, from: data)
         }
-    }
-    
-    @NetworkingActor func waitForRefresh() async {
-        // Return when refreshing has stopped
     }
 }
