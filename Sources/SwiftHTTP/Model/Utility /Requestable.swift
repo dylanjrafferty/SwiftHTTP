@@ -8,7 +8,7 @@
 import Foundation
 
 @globalActor
-final actor NetworkingActor {
+public final actor NetworkingActor {
     public static var shared = NetworkingActor()
     @NetworkingActor var globalOverrides = NetworkingEnvironmentValues()
     @NetworkingActor var environmentOverrides = [AnyHashable: NetworkingEnvironmentValues]()
@@ -38,7 +38,7 @@ public protocol CustomDecoder {
 extension Requestable {
     
     @discardableResult
-    nonisolated func callAsFunction(decodingType: DecodingType = .json) async throws -> ResponseType {
+    nonisolated public func callAsFunction(decodingType: DecodingType = .json) async throws -> ResponseType {
         
         let (data, _) = try await NetworkingActor.shared.globalOverrides[DefaultURLSession.self].execute(request.request)
         
@@ -47,7 +47,7 @@ extension Requestable {
         return try decode(data, decodingType: decodingType)
     }
     
-    nonisolated func decode(_ data: Data, decodingType: DecodingType) throws -> ResponseType {
+    nonisolated private func decode(_ data: Data, decodingType: DecodingType) throws -> ResponseType {
         switch decodingType {
         case .json:
             return try JSONDecoder().decode(ResponseType.self, from: data)

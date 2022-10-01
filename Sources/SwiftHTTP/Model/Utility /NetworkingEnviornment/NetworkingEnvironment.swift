@@ -58,12 +58,12 @@ public struct NetworkingEnvironmentValues {
 
     private let keyPath: WritableKeyPath<NetworkingEnvironmentValues, Value>
 
-    init(_ keyPath: WritableKeyPath<NetworkingEnvironmentValues, Value>) {
+    public init(_ keyPath: WritableKeyPath<NetworkingEnvironmentValues, Value>) {
         self.keyPath = keyPath
     }
 }
 
-extension Requestable {
+public extension Requestable {
     @NetworkingActor func networkingEnvironment<Value>(_ keyPath: WritableKeyPath<NetworkingEnvironmentValues, Value>, _ value: Value) -> Self {
         var mutableOverrides = _overrides
         mutableOverrides[keyPath: keyPath] = value
