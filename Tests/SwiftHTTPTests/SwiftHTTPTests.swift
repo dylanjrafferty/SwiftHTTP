@@ -25,6 +25,17 @@ final class SwiftHTTPTests: XCTestCase {
     }
 }
 
+fileprivate struct BaseURL: NetworkingEnvironmentKey {
+    static var defaultValue: URL = URL(fileURLWithPath: "")
+}
+
+fileprivate extension NetworkingEnvironmentValues {
+    var baseURL: URL {
+        get { self[BaseURL.self] }
+        set { self[BaseURL.self] = newValue }
+    }
+}
+
 fileprivate class OverrideRequest: Requestable {
     
     typealias ResponseType = Response

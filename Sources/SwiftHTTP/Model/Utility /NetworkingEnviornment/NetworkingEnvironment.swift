@@ -31,17 +31,6 @@ public struct NetworkingEnvironmentValues {
     }
 }
 
-private struct BaseURL: NetworkingEnvironmentKey {
-    static var defaultValue: URL = URL(fileURLWithPath: "")
-}
-
-extension NetworkingEnvironmentValues {
-    var baseURL: URL {
-        get { self[BaseURL.self] }
-        set { self[BaseURL.self] = newValue }
-    }
-}
-
 @NetworkingActor @propertyWrapper public struct NetworkingEnvironment<Value> {
     
     @available(*, unavailable,
