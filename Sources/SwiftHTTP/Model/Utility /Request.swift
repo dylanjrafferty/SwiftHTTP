@@ -12,7 +12,7 @@ public struct Request {
     let components: [RequestComponent]
     let url: URL
     
-    init(url: URL, @RequestBuilder builder: () -> [RequestComponent]) {
+    public init(url: URL, @RequestBuilder builder: () -> [RequestComponent]) {
         self.url = url
         components = builder()
     }
