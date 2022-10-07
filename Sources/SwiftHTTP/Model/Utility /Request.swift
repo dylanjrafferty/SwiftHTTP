@@ -17,6 +17,11 @@ public struct Request {
         components = builder()
     }
     
+    init(url: URL, components: [RequestComponent]) {
+        self.url = url
+        self.components = components
+    }
+    
     var request: URLRequest {
         get throws {
             var request = URLRequest(url: url)
