@@ -22,6 +22,10 @@ public struct RequestBuilder {
         expression
     }
     
+    public static func buildExpression(_ expression: QueryParameter) -> RequestComponent {
+        expression
+    }
+    
     public static func buildBlock(_ components: RequestComponent...) -> [RequestComponent] {
         components
     }
