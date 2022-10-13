@@ -3,7 +3,7 @@ import Foundation
 public enum SwiftHTTP {
     
     @NetworkingActor static func globalNetworkingEnvironment<K: NetworkingEnvironmentKey>(_ key: K.Type, _ newValue: K.Value) {
-        NetworkingActor.shared.overrides[ObjectIdentifier(key)] = newValue
+        NetworkingActor.shared.globalEnvironmentOverrides[ObjectIdentifier(key)] = newValue
     }
 }
 

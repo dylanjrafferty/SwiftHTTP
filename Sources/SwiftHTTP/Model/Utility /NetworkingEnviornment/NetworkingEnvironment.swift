@@ -20,7 +20,7 @@ public protocol NetworkingEnvironmentKey {
         get {
             if let value = overrides[ObjectIdentifier(key)] as? K.Value {
                 return value
-            } else if let value = NetworkingActor.shared.overrides[ObjectIdentifier(key)] as? K.Value {
+            } else if let value = NetworkingActor.shared.globalEnvironmentOverrides[ObjectIdentifier(key)] as? K.Value {
                 return value
             } else {
                 return K.defaultValue
