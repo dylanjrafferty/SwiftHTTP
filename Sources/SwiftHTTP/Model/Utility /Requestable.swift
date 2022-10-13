@@ -45,9 +45,7 @@ extension Requestable {
             
             return try decode(data, decodingType: decodingType)
         } catch {
-            if error is NetworkingError {
-                throw error
-            } else if await attempt < NetworkingEnvironmentValues().retryAttempts {
+            if await attempt < NetworkingEnvironmentValues().retryAttempts {
                 return try await callAsFunction(decodingType: decodingType, attempt: attempt + 1)
             } else {
                 throw error
