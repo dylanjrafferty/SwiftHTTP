@@ -1,10 +1,10 @@
 import XCTest
 @testable import SwiftHTTP
 
-final class SwiftHTTPTests: XCTestCase {
+@NetworkingActor final class SwiftHTTPTests: XCTestCase {
     
     
-    @NetworkingActor func testEnvironmentOverride() throws {
+    func testEnvironmentOverride() throws {
         let request = OverrideRequest()
         XCTAssertEqual(request.baseURL, NetworkingEnvironmentValues().baseURL)
         let overridenRequest = OverrideRequest()
@@ -15,7 +15,7 @@ final class SwiftHTTPTests: XCTestCase {
         XCTAssertEqual(overridenRequest.endpoint, "New Endpoint")
     }
     
-    @NetworkingActor func testMultipleOverrides() throws {
+    func testMultipleOverrides() throws {
         let firstRequest = OverrideRequest()
             .networkingEnvironment(\.baseURL, URL(fileURLWithPath: "Some New URL"))
         let secondRequest = OverrideRequest()
@@ -23,6 +23,17 @@ final class SwiftHTTPTests: XCTestCase {
         XCTAssertEqual(firstRequest.baseURL,  URL(fileURLWithPath: "Some New URL"))
         XCTAssertEqual(secondRequest.baseURL, URL(fileURLWithPath: "Newer URL"))
     }
+    
+    func testGlobalOverrides() throws {
+        SwiftHTTP.globalNetworkingEnvironment(BaseURL.self, URL(fileURLWithPath: "Global"))
+        let firstRequest = OverrideRequest()
+            .networkingEnvironment(\.baseURL, URL(fileURLWithPath: "Some New URL"))
+        let secondRequest = OverrideRequest()
+        XCTAssertEqual(firstRequest.baseURL,  URL(fileURLWithPath: "Some New URL"))
+        XCTAssertEqual(secondRequest.baseURL, URL(fileURLWithPath: "Global"))
+    }
+    
+    
 }
 
 fileprivate struct BaseURL: NetworkingEnvironmentKey {

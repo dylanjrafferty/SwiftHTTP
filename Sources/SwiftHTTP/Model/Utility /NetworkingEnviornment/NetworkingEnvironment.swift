@@ -12,18 +12,19 @@ public protocol NetworkingEnvironmentKey {
     static var defaultValue: Self.Value { get }
 }
 
-public struct NetworkingEnvironmentValues {
+@NetworkingActor public struct NetworkingEnvironmentValues {
     
-    static let shared = NetworkingEnvironmentValues()
-    
-    private var overrides = [ObjectIdentifier: Any]()
+    var overrides = [ObjectIdentifier: Any]()
     
     public subscript<K: NetworkingEnvironmentKey>(key: K.Type) -> K.Value {
         get {
-            guard let value = overrides[ObjectIdentifier(key)] as? K.Value else {
+            if let value = overrides[ObjectIdentifier(key)] as? K.Value {
+                return value
+            } else if let value = NetworkingActor.shared.overrides[ObjectIdentifier(key)] as? K.Value {
+                return value
+            } else {
                 return K.defaultValue
             }
-            return value
         }
         set {
             overrides[ObjectIdentifier(key)] = newValue

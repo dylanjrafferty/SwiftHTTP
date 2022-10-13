@@ -10,7 +10,7 @@ import Foundation
 @globalActor
 public final actor NetworkingActor {
     public static var shared = NetworkingActor()
-    @NetworkingActor var globalOverrides = NetworkingEnvironmentValues()
+    @NetworkingActor var overrides = [ObjectIdentifier: Any]()
     @NetworkingActor var environmentOverrides = [AnyHashable: NetworkingEnvironmentValues]()
 }
 
@@ -40,7 +40,7 @@ extension Requestable {
     @discardableResult
     nonisolated public func callAsFunction(decodingType: DecodingType = .json) async throws -> ResponseType {
         
-        let (data, _) = try await NetworkingActor.shared.globalOverrides[DefaultURLSession.self].execute(request.request)
+        let (data, _) = try await NetworkingEnvironmentValues().defaultURLSession.execute(request.request)
         
         guard let data = data else { throw NetworkingError.invalidData }
         
