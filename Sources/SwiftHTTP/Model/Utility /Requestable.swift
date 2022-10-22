@@ -32,7 +32,7 @@ public enum DecodingType {
 }
 
 public protocol CustomDecoder {
-    func decode<T>(_ type: T.Type, from: Data) throws -> T
+    func decode<T: Decodable>(_ type: T.Type, from data: Data) throws -> T
 }
 
 extension Requestable {
