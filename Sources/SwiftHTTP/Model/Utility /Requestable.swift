@@ -39,18 +39,10 @@ extension Requestable {
     
     @discardableResult
     nonisolated public func callAsFunction(decodingType: DecodingType = .json, attempt: Int = 0) async throws -> ResponseType {
-        do {
-            let (data, _) = try await NetworkingEnvironmentValues().defaultURLSession.execute(request.request)
-            guard let data = data else { throw NetworkingError.invalidData }
-            
-            return try decode(data, decodingType: decodingType)
-        } catch {
-            if await attempt < NetworkingEnvironmentValues().retryAttempts {
-                return try await callAsFunction(decodingType: decodingType, attempt: attempt + 1)
-            } else {
-                throw error
-            }
-        }
+        let (data, _) = try await NetworkingEnvironmentValues().defaultURLSession.execute(request.request)
+        guard let data = data else { throw NetworkingError.invalidData }
+        
+        return try decode(data, decodingType: decodingType)
     }
     
     nonisolated private func decode(_ data: Data, decodingType: DecodingType) throws -> ResponseType {
