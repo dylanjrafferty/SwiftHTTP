@@ -44,17 +44,13 @@ extension Requestable {
             let (data, _) = try await NetworkingEnvironmentValues().defaultURLSession.execute(urlRequest)
             guard let data = data else { throw NetworkingError.invalidData }
             
-            return try self.decode(data, decodingType: decodingType)
+            switch decodingType {
+            case .json:
+                return try JSONDecoder().decode(ResponseType.self, from: data)
+            case .custom(let decoder):
+                return try decoder.decode(ResponseType.self, from: data)
+            }
         }
         .value
-    }
-    
-    nonisolated private func decode(_ data: Data, decodingType: DecodingType) throws -> ResponseType {
-        switch decodingType {
-        case .json:
-            return try JSONDecoder().decode(ResponseType.self, from: data)
-        case .custom(let decoder):
-            return try decoder.decode(ResponseType.self, from: data)
-        }
     }
 }
