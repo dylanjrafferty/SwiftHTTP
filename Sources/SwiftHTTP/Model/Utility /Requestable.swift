@@ -38,11 +38,15 @@ public protocol CustomDecoder {
 extension Requestable {
     
     @discardableResult
-    nonisolated public func callAsFunction(decodingType: DecodingType = .json, attempt: Int = 0) async throws -> ResponseType {
-        let (data, _) = try await NetworkingEnvironmentValues().defaultURLSession.execute(request.request)
-        guard let data = data else { throw NetworkingError.invalidData }
-        
-        return try decode(data, decodingType: decodingType)
+    nonisolated public func callAsFunction(decodingType: DecodingType = .json) async throws -> ResponseType {
+        let urlRequest = try await request.request
+        return try await Task.retrying(maxRetryCount: NetworkingEnvironmentValues().retryAttempts) {
+            let (data, _) = try await NetworkingEnvironmentValues().defaultURLSession.execute(urlRequest)
+            guard let data = data else { throw NetworkingError.invalidData }
+            
+            return try self.decode(data, decodingType: decodingType)
+        }
+        .value
     }
     
     nonisolated private func decode(_ data: Data, decodingType: DecodingType) throws -> ResponseType {
