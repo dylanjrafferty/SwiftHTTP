@@ -22,4 +22,6 @@ First import the package to your file
 Once the package has been imported, you can use it to create network requests with a declarative and SwiftUI like feel. 
 
 
+## Sample Code & Examples
 
+All examples of use cases can be viewed here within the sample repo https://github.com/dylanjrafferty/swifthttp-example-app
