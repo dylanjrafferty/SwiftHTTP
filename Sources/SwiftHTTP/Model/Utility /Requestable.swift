@@ -53,4 +53,9 @@ extension Requestable {
         }
         .value
     }
+    
+    @discardableResult
+    nonisolated public func execute(decodingType: DecodingType = .json) async throws -> ResponseType {
+        try await callAsFunction(decodingType: decodingType)
+    }
 }
