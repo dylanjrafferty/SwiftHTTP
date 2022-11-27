@@ -9,7 +9,7 @@ import Foundation
 
 @globalActor
 public final actor NetworkingActor {
-    public static var shared = NetworkingActor()
+    public static let shared = NetworkingActor()
     @NetworkingActor var globalEnvironmentOverrides = [ObjectIdentifier: Any]()
     @NetworkingActor var environmentOverrides = [AnyHashable: NetworkingEnvironmentValues]()
 }
