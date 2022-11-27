@@ -74,7 +74,7 @@ public extension Requestable {
 }
 
 extension Requestable {
-    var _overrides: NetworkingEnvironmentValues {
+    @NetworkingActor var _overrides: NetworkingEnvironmentValues {
         get {
             NetworkingActor.shared.environmentOverrides[id] ?? NetworkingEnvironmentValues()
         }

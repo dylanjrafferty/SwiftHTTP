@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Body<T: Encodable>: RequestComponent {
+public struct Body<T: Encodable & Sendable>: RequestComponent {
     
     let bodyEncoding: BodyEncoding
     let body: T
@@ -43,6 +43,6 @@ public struct Body<T: Encodable>: RequestComponent {
 
 }
 
-public enum BodyEncoding {
+public enum BodyEncoding: Sendable {
     case json
 }

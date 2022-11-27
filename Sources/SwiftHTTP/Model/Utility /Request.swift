@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Request {
+public struct Request: Sendable {
     
     let components: [RequestComponent]
     let url: URL

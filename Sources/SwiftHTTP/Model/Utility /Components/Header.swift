@@ -29,7 +29,7 @@ public struct Header: RequestComponent {
     
 }
 
-public struct KeyValue {
+public struct KeyValue: Sendable {
     let key: String
     let value: String
 }

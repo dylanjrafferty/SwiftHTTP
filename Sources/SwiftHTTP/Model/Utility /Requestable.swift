@@ -15,7 +15,7 @@ public final actor NetworkingActor {
 }
 
 @NetworkingActor public protocol Requestable: AnyObject, Identifiable {
-    associatedtype ResponseType: Decodable
+    associatedtype ResponseType: Decodable & Sendable
     var request: Request { get }
     nonisolated var requestOptions: RequestOptions { get }
 }
@@ -26,12 +26,12 @@ public extension Requestable {
     }
 }
 
-public enum DecodingType {
+public enum DecodingType: Sendable {
     case json
     case custom(CustomDecoder)
 }
 
-public protocol CustomDecoder {
+public protocol CustomDecoder: Sendable {
     func decode<T: Decodable>(_ type: T.Type, from data: Data) throws -> T
 }
 
@@ -40,7 +40,7 @@ extension Requestable {
     @discardableResult
     nonisolated public func callAsFunction(decodingType: DecodingType = .json) async throws -> ResponseType {
         let urlRequest = try await request.request
-        return try await Task.retrying(maxRetryCount: NetworkingEnvironmentValues().retryAttempts) {
+        return try await Task.retrying(maxRetryCount: NetworkingEnvironmentValues().retryAttempts) { @Sendable in
             let (data, _) = try await NetworkingEnvironmentValues().defaultURLSession.execute(urlRequest)
             guard let data = data else { throw NetworkingError.invalidData }
             

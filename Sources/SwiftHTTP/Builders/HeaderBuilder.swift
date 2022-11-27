@@ -22,6 +22,6 @@ public struct HeaderBuilder {
     }
 }
 
-public protocol RequestComponent {
+public protocol RequestComponent: Sendable {
     func apply(to request: inout URLRequest) throws 
 }
