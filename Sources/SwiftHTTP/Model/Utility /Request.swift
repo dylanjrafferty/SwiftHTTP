@@ -17,7 +17,7 @@ public struct Request: Sendable {
         components = builder()
     }
     
-    init(url: URL, components: [RequestComponent]) {
+    public init(url: URL, components: [RequestComponent]) {
         self.url = url
         self.components = components
     }

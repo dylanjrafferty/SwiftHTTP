@@ -14,6 +14,10 @@ public struct RequestBuilder {
         component
     }
     
+    public static func buildExpression(_ expression: [any RequestComponent]) -> [RequestComponent] {
+        expression
+    }
+    
     public static func buildExpression<T: Encodable>(_ expression: Body<T>) -> RequestComponent {
         expression
     }
